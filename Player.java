@@ -8,6 +8,8 @@ import org.newdawn.slick.geom.Rectangle;
 
 public class Player extends Entity {
     public int hp;
+    Rectangle hitbox;
+    Circle reach;
     public int maxhp;
     public int mp;
     public int maxmp;
@@ -31,7 +33,7 @@ public class Player extends Entity {
     public Image[] stabRightScrew = {new Image("res/R1.png"),new Image("res/R2.png")};
     public Image[] stabUpSaber = {new Image("res/B1 (Energy Saber).png"),new Image("res/B2 (Energy Saber).png"), new Image ("res/B3 (Energy Saber).png")};
     public Image[] stabDownSaber = {new Image("res/F1 (Energy Saber).png"),new Image("res/F2 (Energy Saber).png"), new Image("res/F3 (Energy Saber).png")};
-    public Image[] stabLeftSaber = {new Image("res/L1 (Energy Saber).png"),new Image("res/L2 (Energy Saber).png"), new Image ("res/L3 (Energy Saber).png")};
+    public Image[] stabLeftSaber = {new Image("res/S1 (Energy Saber).png"),new Image("res/S2 (Energy Saber).png"), new Image ("res/S3 (Energy Saber).png")};
     public Image[] stabRightSaber = {new Image("res/R1 (Energy Saber).png"),new Image("res/R2 (Energy Saber).png"), new Image("res/R3 (Energy Saber).png")};
     public Image[] shootUp = {new Image("res/B1 (Laser Shot).png"),new Image("res/B2 (Laser Shot).png")};
     public Image[] shootDown = {new Image("res/F1 (Laser Shot).png"),new Image("res/F2 (Laser Shot).png")};
@@ -55,10 +57,10 @@ public class Player extends Entity {
 		down = new Animation(downA,time1,false);
 		idle = new Animation(idleA,1,false);
 	
-			stabL = new Animation(stabLeftScrew,time2,true);
-			stabR = new Animation(stabRightScrew,time2, true);
-			stabU = new Animation(stabUpScrew,time1,false);
-			stabD = new Animation(stabDownScrew,time1,false);
+		stabL = new Animation(stabLeftScrew,time2,true);
+		stabR = new Animation(stabRightScrew,time2, true);
+		stabU = new Animation(stabUpScrew,time1,false);
+		stabD = new Animation(stabDownScrew,time1,false);
 			
 		sprite = up;
 		direction="down";
@@ -77,16 +79,37 @@ public class Player extends Entity {
     	intel = 8;
     	money = 0;
     }
-    public boolean meleeRange(Entity object, float range)
-	{
-		Circle radius = new Circle(x,y,range);
-		Rectangle theplayer = new Rectangle(object.x,object.y,object.image.getWidth(),object.image.getHeight());
-		if (radius.intersects(theplayer)||radius.contains(theplayer.getX(),theplayer.getY()))
-		{
-			return true;
-		}
-		else return false;
-	}
+
+    public boolean meleeRange(Entity object, float range) {// return true if he
+    	// can hit the enemy
+    	// Circle reach =
+    	// new
+    	// Circle(x,y,range);
+    	// Rectangle hitbox;
+    	reach = new Circle(x + 32, y + 32, range);
+    	// if (object instanceof Sentry)
+    	hitbox = new Rectangle(object.x, object.y, object.sprite
+    			.getCurrentFrame().getWidth(), object.sprite.getCurrentFrame()
+    			.getHeight());
+    	// else
+    	// hitbox = new
+    	// Rectangle(object.x,object.y,object.image.getWidth(),object.image.getHeight());
+    	boolean canHit = ((reach.intersects(hitbox)) || (reach.contains(
+    			object.x, object.y)));
+    	if (((direction.equals("up")) && (object.y < y)) && canHit) {
+    		return true;
+    	}
+    	if (((direction.equals("down")) && (object.y > y)) && canHit) {
+    		return true;
+    	}
+    	if ((((direction.equals("right")) && (object.x > x))) && canHit) {
+    		return true;
+    	}
+    	if (((direction.equals("left")) && (object.x < x)) && canHit) {
+    		return true;
+    	}
+    	return false;
+    }
     public void setWeapon1(String weapons)
     {
     	this.weapon1  =  weapons;

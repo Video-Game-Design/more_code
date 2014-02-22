@@ -26,6 +26,8 @@ public class test extends BasicGame{
 	ArrayList<Wall> walls = new ArrayList<Wall>();
 	ArrayList<Mob> mobs = new ArrayList<Mob>();
 	int x,y;
+	boolean titleScreen = false;
+	int level =1;
 	public test(String title) {
 		super(title);
 	}
@@ -36,17 +38,17 @@ public class test extends BasicGame{
 		
 		grassMap.render(x, y,0);
 		player.sprite.draw(player.x,player.y);
-		for (int i = 1; i<2;i++)
-		{
-			grassMap.render(x, y, i);
-		}
 		for(Mob moby:mobs)
 		{
-			moby.image.draw(moby.x,moby.y);
+			moby.sprite.draw(moby.x,moby.y);
 		}
 		for (Projectile projecty:projectiles)
 		{
 			projecty.image.draw(projecty.x,projecty.y);
+		}
+		for (int i = 1; i<2;i++)
+		{
+			grassMap.render(x, y, i);
 		}
 		g.drawString("Mouse one Weapon: " + player.getWeapon1(), 700, 10);
 		g.drawString("Mouse two Weapon: " + player.getWeapon2(), 700, 30);
@@ -79,7 +81,7 @@ public class test extends BasicGame{
 		
 		}
 		mobs.add(new Sentry(1024,128));
-		mobs.add(new Laserbot(1024,256));
+		mobs.add(new Meleebot(1024,128));
 	}
 
 	@Override
@@ -95,13 +97,11 @@ public class test extends BasicGame{
 		
 		player.sprite.update(arg1);
 		//updates for list of stuff
-		for(Mob moby:mobs)
+		for(int i=0;i<mobs.size();i++)
 		{
-			moby.ai(player, projectiles);
-			/*if (player.meleeRange(moby, 128))
-			{
-				moby.hurt(10);
-			}*/  
+		    mobs.get(i).ai(player,projectiles);
+		    if (mobs.get(i).hp<=0)
+		     mobs.remove(i);
 		}
 		for(int i=0;i<projectiles.size();i++)
 		{
@@ -171,6 +171,14 @@ public class test extends BasicGame{
 				player.stabR = new Animation(player.stabRightScrew,time1, false);
 				player.stabU = new Animation(player.stabUpScrew,time1,false);
 				player.stabD = new Animation(player.stabDownScrew,time1,false);
+				
+				for (Mob moby:mobs)
+			     {
+			      if (player.meleeRange(moby, 128))
+			      {
+			       moby.hurt(10);
+			      }
+			     }
 			}
 			else
 			if (player.getWeapon1().equals("saber"))
@@ -179,6 +187,14 @@ public class test extends BasicGame{
 				player.stabR = new Animation(player.stabRightSaber,time2, true);
 				player.stabU = new Animation(player.stabUpSaber,time2,true);
 				player.stabD = new Animation(player.stabDownSaber,time2,true);
+				
+				for (Mob moby:mobs)
+			     {
+			      if (player.meleeRange(moby, 128))
+			      {
+			       moby.hurt(10);
+			      }
+			     }
 			}
 			if (player.getWeapon1().equals("energy gun"))
 			{
@@ -211,27 +227,27 @@ public class test extends BasicGame{
 			timey=0;	
 		}
 		}
-		if (input.isKeyPressed(Input.KEY_NUMPAD4))
+		if (input.isKeyPressed(Input.KEY_4))
 		{
 			player.setWeapon1("screw driver");			
 		}
-		if (input.isKeyPressed(Input.KEY_NUMPAD5))
+		if (input.isKeyPressed(Input.KEY_5))
 		{
 			player.setWeapon1("saber");
 		}
-		if (input.isKeyPressed(Input.KEY_NUMPAD6))
+		if (input.isKeyPressed(Input.KEY_6))
 		{
 			player.setWeapon1("energy gun");
 		}
-		if (input.isKeyPressed(Input.KEY_NUMPAD1))
+		if (input.isKeyPressed(Input.KEY_1))
 		{
 			player.setWeapon2("screw driver");			
 		}
-		if (input.isKeyPressed(Input.KEY_NUMPAD2))
+		if (input.isKeyPressed(Input.KEY_2))
 		{
 			player.setWeapon2("saber");
 		}
-		if (input.isKeyPressed(Input.KEY_NUMPAD3))
+		if (input.isKeyPressed(Input.KEY_3))
 		{
 			player.setWeapon2("energy gun");
 		}
@@ -248,6 +264,14 @@ public class test extends BasicGame{
 				player.stabR = new Animation(player.stabRightScrew,time1, false);
 				player.stabU = new Animation(player.stabUpScrew,time1,false);
 				player.stabD = new Animation(player.stabDownScrew,time1,false);
+				
+				for (Mob moby:mobs)
+			     {
+			      if (player.meleeRange(moby, 128))
+			      {
+			       moby.hurt(10);
+			      }
+			     }
 			}
 			else
 			if (player.getWeapon2().equals("saber"))
@@ -256,6 +280,14 @@ public class test extends BasicGame{
 				player.stabR = new Animation(player.stabRightSaber,time2, true);
 				player.stabU = new Animation(player.stabUpSaber,time2,true);
 				player.stabD = new Animation(player.stabDownSaber,time2,true);
+				
+				for (Mob moby:mobs)
+			     {
+			      if (player.meleeRange(moby, 128))
+			      {
+			       moby.hurt(10);
+			      }
+			     }
 			}
 			if (player.getWeapon2().equals("energy gun"))
 			{

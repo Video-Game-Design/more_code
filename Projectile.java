@@ -20,7 +20,7 @@ public class Projectile extends Entity {
 		i = startingX-x1;
 		j = startingY-y1;
 		magnitude = Math.sqrt(Math.pow(i,2) + Math.pow(j,2));
-		image = new Image("res/Bullet.png");
+		image = new Image("res/Energy Ball Red.png");
 		cannotMoveLeft=false;
 		cannotMoveRight=false;
 		cannotMoveUp= false;

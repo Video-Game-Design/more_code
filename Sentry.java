@@ -14,14 +14,9 @@ import org.newdawn.slick.geom.Rectangle;
 public class Sentry extends Mob {
 	boolean subSeePlayer=false;
 	Animation see;
-	boolean alarm1;
-	boolean alarm2;
-	Timer pretimer;
-	Timer posttimer;
-	boolean aiming,prepareingToShoot,aboutToShoot,postShootTime;
 	public Sentry(float myx, float myy) throws SlickException 
 	{
-		hp = 5;
+		hp = 60;
 		money = 5;
 		dmg = 2;
 		image = new Image("res/Sentry Down.png");
@@ -33,16 +28,12 @@ public class Sentry extends Mob {
 		moveY=0;
 		canShoot=true;
 		directionrnd = 3;
-		alarm1=false;
-		alarm2=false;
-		pretimer = new Timer();
-		posttimer=new Timer();
-		aiming=false;
-		prepareingToShoot=false;
-		aboutToShoot=false;
-		postShootTime=false;
 		//directionrnd isnt acutally random here. i just needed a direction variable as a int type
 		//Call stuff at diff frames in the animation class
+		knockbackX=0;
+		knockbackY=0;
+		knockbackTimer=0;
+		knockedBack=false;
 		Image[] upA = {new Image("res/Sentry Up Shoot 1.png"),new Image("res/Sentry Up Shoot 2.png")};
 		Image[] downA= {new Image("res/Sentry Down Shoot 1.png"),new Image("res/Sentry Down Shoot 2.png")};
 		Image[] leftA={new Image("res/Sentry Left Shoot 1.png"),new Image("res/Sentry Left Shoot 2.png")};
@@ -61,6 +52,7 @@ public class Sentry extends Mob {
 	
 	public void ai( Player player, ArrayList<Projectile> projectiles) throws SlickException
 	{
+		System.out.println(hp);
 		if (canSeePlayer(player, 384))
 		{
 			seePlayer=true;
@@ -76,8 +68,6 @@ public class Sentry extends Mob {
 				else
 					subSeePlayer=false;
 			}
-			//Rectangle bot = new Rectangle(x,y,image.getWidth(),image.getHeight());
-			//Circle inner =  new Circle(player.x,player.y,)
 		}
 		else seePlayer=false;
 		if (seePlayer)
@@ -104,26 +94,18 @@ public class Sentry extends Mob {
 					sprite = down;
 					sprite.stopAt(1);
 					directionrnd = 3;
-					//sprite = see;
-					//sprite.setCurrentFrame(directionrnd);
 					up.restart();
 					left.restart();
 					right.restart();
-					//image = new Image("res/Sentry Down Alert.png");
-					//direction = "Down";
 				}
 				else
 				{
 					sprite = up;
 					sprite.stopAt(1);
 					directionrnd = 2;
-					//sprite = see;
-					//prite.setCurrentFrame(directionrnd);
 					down.restart();
 					left.restart();
 					right.restart();
-					//image = new Image("res/Sentry Up.png");
-					//direction = "Up";
 				}
 			}
 			if ((angle > (Math.PI/-4)) && (angle < (Math.PI/4)))
@@ -133,26 +115,18 @@ public class Sentry extends Mob {
 					sprite =right;
 					sprite.stopAt(1);
 					directionrnd = 1;
-					//sprite = see;
-					//sprite.setCurrentFrame(directionrnd);
 					up.restart();
 					down.restart();
 					left.restart();
-					//image = new Image("res/Sentry Right Alert.png");
-					//direction = "Right";
 				}
 				else
 				{
 					sprite = left;
 					sprite.stopAt(1);
 					directionrnd = 0;
-					//sprite = see;
-					//sprite.setCurrentFrame(directionrnd);
 					up.restart();
 					down.restart();
 					right.restart();
-					//image = new Image("res/Sentry Left Alert.png");
-					//direction = "Left";
 				}
 			}
 		}
@@ -164,11 +138,9 @@ public class Sentry extends Mob {
 			down.restart();
 			right.restart();
 			left.restart();
-			//image = new Image("res/Sentry "+direction+".png");
 		}
 		if (subSeePlayer&&canShoot)
 		{
-			//image= new Image("res/Sentry " +direction+" Shoot 2.png");
 			seePlayer=true;
 			canShoot=false;
 			projectiles.add(new Projectile(x+32,y+24,player.x+32,player.y+32));
