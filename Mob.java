@@ -41,10 +41,12 @@ public abstract class Mob extends Entity {
 	{
 		hp -= damage;
 	}
-	
-	public void die()
+	public void dropHP(double i,ArrayList<Medkit> meds) throws SlickException
 	{
-		//TODO make mob die
+		if(Math.random()<=i)
+		{
+			meds.add(new Medkit(x+24,y+48));
+		}
 	}
 	
 	public void ai(Player player, ArrayList<Projectile> projectiles) throws SlickException

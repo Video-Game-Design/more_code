@@ -57,8 +57,48 @@ public abstract class Entity {
     		cannotMoveDown=false;
     	}
     }
+    /*
     public void collision(Entity other, boolean a)
     {
-    	//if (y == other.y) || 
-    }
+    	//LEFT
+    	if(other.x == x+image.getWidth())
+    	{
+    		if((y==other.y)||((other.y>y)&&(other.y<y+image.getHeight()))||(((other.y+other.image.getHeight())>y)&&((other.y+other.image.getHeight())>y+image.getHeight())))
+    			cannotMoveRight=true;
+    		else
+    			cannotMoveRight=false;
+    	}
+    	else
+    		cannotMoveRight=false;
+    	//RIGHT
+    	if(other.x+other.image.getWidth()==x)
+    	{
+    		if ((y==other.y)||(((other.y+other.image.getHeight())>y)&&((other.y+other.image.getHeight())>y+image.getHeight()))||((other.y>y)&&(other.y<y+image.getHeight())))
+    			cannotMoveLeft=true;
+    		else
+    			cannotMoveLeft=false;
+    	}
+    	else
+    		cannotMoveLeft=false;
+    	//UP
+    	if(other.y==y+image.getHeight())
+    	{
+    		if ((other.x==x)||((other.x>x)&&(other.x<x+image.getWidth()))||((other.x+other.image.getWidth()>x)&&(other.x+other.image.getWidth()<x+image.getWidth())))
+    			cannotMoveDown=true;
+    		else
+    			cannotMoveDown=false;
+    	}
+    	else
+    		cannotMoveDown=false;
+    	//DOWN
+    	if(other.y+other.image.getHeight()==y)
+    	{
+    		if((other.x==x)||((other.x>x)&&(other.x<x+image.getWidth()))||((other.x+other.image.getWidth()>x)&&(other.x+other.image.getWidth()<x+image.getWidth())))
+    			cannotMoveUp=true;
+    		else
+    			cannotMoveUp=false;
+    	}
+    	else
+    		cannotMoveUp=false;
+    }*/
 }

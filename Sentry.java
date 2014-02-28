@@ -8,18 +8,20 @@ import java.util.TimerTask;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Rectangle;
 
 public class Sentry extends Mob {
 	boolean subSeePlayer=false;
 	Animation see;
+	Sound attacksfx;
 	public Sentry(float myx, float myy) throws SlickException 
 	{
 		hp = 60;
 		money = 5;
 		dmg = 2;
-		image = new Image("res/Sentry Down.png");
+		image = new Image("res/Video Game Tiles - Pixel by Pixel/Sentry Down.png");
 		seePlayer = false;
 		direction = "Down";
 		x=myx;
@@ -34,12 +36,12 @@ public class Sentry extends Mob {
 		knockbackY=0;
 		knockbackTimer=0;
 		knockedBack=false;
-		Image[] upA = {new Image("res/Sentry Up Shoot 1.png"),new Image("res/Sentry Up Shoot 2.png")};
-		Image[] downA= {new Image("res/Sentry Down Shoot 1.png"),new Image("res/Sentry Down Shoot 2.png")};
-		Image[] leftA={new Image("res/Sentry Left Shoot 1.png"),new Image("res/Sentry Left Shoot 2.png")};
-		Image[] rightA={new Image("res/Sentry Right Shoot 1.png"),new Image("res/Sentry Right Shoot 2.png")};
-		Image[] idleA={new Image("res/Sentry Left.png"),new Image("res/Sentry Right.png"),new Image("res/Sentry Up.png"),new Image("res/Sentry Down.png"),};
-		Image[] seeA={new Image("res/Sentry Left Alert.png"),new Image("res/Sentry Right Alert.png"),new Image("res/Sentry Up.png"),new Image("res/Sentry Down Alert.png")};
+		Image[] upA = {new Image("res/Video Game Tiles - Pixel by Pixel/Sentry Up Shoot 1.png"),new Image("res/Video Game Tiles - Pixel by Pixel/Sentry Up Shoot 2.png")};
+		Image[] downA= {new Image("res/Video Game Tiles - Pixel by Pixel/Sentry Down Shoot 1.png"),new Image("res/Video Game Tiles - Pixel by Pixel/Sentry Down Shoot 2.png")};
+		Image[] leftA={new Image("res/Video Game Tiles - Pixel by Pixel/Sentry Left Shoot 1.png"),new Image("res/Video Game Tiles - Pixel by Pixel/Sentry Left Shoot 2.png")};
+		Image[] rightA={new Image("res/Video Game Tiles - Pixel by Pixel/Sentry Right Shoot 1.png"),new Image("res/Video Game Tiles - Pixel by Pixel/Sentry Right Shoot 2.png")};
+		Image[] idleA={new Image("res/Video Game Tiles - Pixel by Pixel/Sentry Left.png"),new Image("res/Video Game Tiles - Pixel by Pixel/Sentry Right.png"),new Image("res/Video Game Tiles - Pixel by Pixel/Sentry Up.png"),new Image("res/Video Game Tiles - Pixel by Pixel/Sentry Down.png"),};
+		Image[] seeA={new Image("res/Video Game Tiles - Pixel by Pixel/Sentry Left Alert.png"),new Image("res/Video Game Tiles - Pixel by Pixel/Sentry Right Alert.png"),new Image("res/Video Game Tiles - Pixel by Pixel/Sentry Up.png"),new Image("res/Video Game Tiles - Pixel by Pixel/Sentry Down Alert.png")};
 		left = new Animation(leftA,500,true);
 		right = new Animation(rightA,500,true);
 		up = new Animation(upA,500,true);
@@ -48,15 +50,15 @@ public class Sentry extends Mob {
 		see = new Animation(seeA,1000,false);
 		sprite = idle;
 		sprite.setCurrentFrame(3);
+		attacksfx = new Sound("res/sound/Laser.wav");
 	}
 	
 	public void ai( Player player, ArrayList<Projectile> projectiles) throws SlickException
 	{
-		System.out.println(hp);
 		if (canSeePlayer(player, 384))
 		{
 			seePlayer=true;
-			Rectangle[] ranges = {new Rectangle(x,y,224,image.getHeight()), new Rectangle(x-224,y,224,image.getHeight()), new Rectangle(x,y-224,image.getWidth(),224), new Rectangle(x,y,image.getWidth(),224)};
+			Rectangle[] ranges = {new Rectangle(x-224,y+20,224,40),new Rectangle(x+20,y-224,40,224),new Rectangle(x+80,y+20,224,40),new Rectangle(x+20,y+80,40,224)};
 			Rectangle theplayer = new Rectangle(player.x,player.y,player.image.getWidth(),player.image.getHeight());
 			for (Rectangle recky:ranges)
 			{
@@ -143,7 +145,8 @@ public class Sentry extends Mob {
 		{
 			seePlayer=true;
 			canShoot=false;
-			projectiles.add(new Projectile(x+32,y+24,player.x+32,player.y+32));
+			projectiles.add(new Projectile(x+32,y+24,player.x+32,player.y+32,false));
+			attacksfx.play();
 			Timer waittime = new Timer();
 			waittime.schedule(new TimerTask()
 			{
@@ -154,6 +157,5 @@ public class Sentry extends Mob {
 			},2000);
 		}
 	}
-
 
 }

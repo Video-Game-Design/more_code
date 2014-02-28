@@ -13,7 +13,7 @@ public class Wall extends Entity{
 		type = myType;
 		//TODO depending on type: set image and isSolid
 		//testing use only (below):
-		image = new Image("res/block.png");
+		image = new Image("res/Video Game Tiles - Pixel by Pixel/block.png");
 		isSolid=true;
 		//if (myType.equals("water")) image = new Image("res/")
 	}
@@ -22,7 +22,7 @@ public class Wall extends Entity{
 		super();
 		x=myx;
 		y=myy;
-		image = new Image("res/block.png");
+		image = new Image("res/Video Game Tiles - Pixel by Pixel/block.png");
 		isSolid=true;
 	}
     public String toString()
